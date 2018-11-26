@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import logo from '../img/webdxd.png'
 
@@ -13,7 +14,7 @@ class Nav extends Component {
                         <li><Link to="/">Home</Link></li>                      
                     </ul>
                     <div>
-                        {this.props.token ? <Link to="/profile"><img className="avatar-sm" src="img/avatar.jpg" alt="avatar" /></Link> : <Link to="/login">Login</Link>}
+                        {this.props.token ? <Link to="/profile"><img className="avatar-sm" src={this.props.profile.avatarUrl} alt="avatar" /></Link> : <Link to="/login">Login</Link>}
                     </div>
                 </div>
             </nav>
@@ -21,4 +22,10 @@ class Nav extends Component {
     }
 }
 
-export default Nav;
+const mapState = state => ({
+    profile: state.user.profile,
+    token: state.user.token
+})
+
+
+export default withRouter(connect(mapState, null)(Nav));

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { baseUrl } from '../../config'
-import { Link, Redirect } from 'react-router-dom'
+import { Link, Redirect, withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 class ProfileForm extends Component {
     constructor(props) {
@@ -38,20 +37,15 @@ class ProfileForm extends Component {
     }
 
     saveProfile() {
-        let that = this
-        axios.put(baseUrl + '/profile', this.state, {
-            headers: {
-                Authorization: 'Bearer ' + this.props.token
-            }
-        }).then(res => {
-            that.props.handleUserUpdate({profile: res.data.profile})
-            that.setState({
-                isSaved: true
-            })
+        this.props.updateProfile({
+            token: this.props.token,
+            profile: this.state,
+            history: this.props.history
         })
     }
 
     render() {
+        let profile = this.props.profile
         return (
             <div className="col-2of5 bg-white">
                 <form className="profile" action="profile.html">
@@ -61,7 +55,7 @@ class ProfileForm extends Component {
                         <img className="avatar-upload" src="img/upload.png" alt="upload-img" />
                     </div>
                     <input className="input-profile" type="text" value={this.state.name} onChange={this.handleNameChange} placeholder="Full name" />
-                    <h5>@{this.props.username}</h5>
+                    <h5>@{profile.username}</h5>
                     <input className="input-profile" type="text" value={this.state.location} onChange={this.handleLocationChange} placeholder="Location" />
                     <textarea className="input-profile" placeholder="Personal description" value={this.state.bio} onChange={this.handleBioChange}></textarea>
                     {this.state.isSaved ? <Redirect to="/profile" /> : <button className="btn-primary space-top" onClick={this.saveProfile} type="button">Save</button>}
@@ -72,7 +66,16 @@ class ProfileForm extends Component {
     }
 }
 
-export default ProfileForm
+const mapState = state => ({
+    profile: state.user.profile,
+    token: state.user.token
+})
+
+const mapDispatch = dispatch => ({
+    updateProfile: (user) => dispatch.user.updateProfile(user)
+})
+
+export default withRouter(connect(mapState, mapDispatch)(ProfileForm));
 
 
 

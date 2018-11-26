@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios'
-import { baseUrl } from '../../config'
+import { connect } from 'react-redux'
 
 class TweetPost extends Component {
     constructor(props) {
@@ -19,16 +18,9 @@ class TweetPost extends Component {
     }
 
     handlePost() {
-        let that = this
-        axios.post(baseUrl + '/tweet', { content: this.state.content}, {
-            headers: {
-                Authorization: 'Bearer ' + this.props.token
-            }
-        }).then(res => {
-            this.props.handleNewPost(res.data.tweet)
-            that.setState({
-                content: ''
-            })
+        this.props.addTweet({content: this.state.content, token: this.props.token})
+        this.setState({
+            content: ''
         })
     }
 
@@ -51,4 +43,12 @@ class TweetPost extends Component {
     }
 }
 
-export default TweetPost;
+const mapState = state => ({
+    token: state.user.token
+})
+
+const mapDispatch = dispatch => ({
+    addTweet: (data) => dispatch.tweets.addData(data)
+})
+
+export default connect(mapState, mapDispatch)(TweetPost);

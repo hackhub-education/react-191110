@@ -73,6 +73,7 @@ button:disabled {
     display: flex;
     flex-direction: row;
     align-items: center;
+    position: relative;
 }
 
 .v-top {
@@ -160,6 +161,11 @@ button:disabled {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.profile-action {
+    display: flex;
+    flex-direction: column;
 }
 
 .user-auth {
