@@ -81,7 +81,7 @@ export const tweets = {
             })
         },
         async addData(data) {
-            axios.post(baseUrl + '/tweet', { content: data.content}, {
+            axios.post(baseUrl + '/tweet', { ...data }, {
                 headers: {
                     Authorization: 'Bearer ' + data.token
                 }

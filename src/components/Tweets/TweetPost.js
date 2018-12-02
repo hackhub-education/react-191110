@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import ReactFilestack from 'filestack-react';
 
 class TweetPost extends Component {
     constructor(props) {
@@ -9,6 +10,8 @@ class TweetPost extends Component {
         }
         this.handleTextChange = this.handleTextChange.bind(this)
         this.handlePost = this.handlePost.bind(this)
+        this.handleImage = this.handleImage.bind(this)
+
     }
 
     handleTextChange(e) {
@@ -18,9 +21,15 @@ class TweetPost extends Component {
     }
 
     handlePost() {
-        this.props.addTweet({content: this.state.content, token: this.props.token})
+        this.props.addTweet({...this.state,  token: this.props.token})
         this.setState({
             content: ''
+        })
+    }
+
+    handleImage(res) {
+        this.setState({
+            imageUrl: res.filesUploaded[0].url
         })
     }
 
@@ -34,7 +43,16 @@ class TweetPost extends Component {
                     </div>
                     <div className="row tweet-actions">
                         <input className="hidden" type="file" />
-                        <button className="btn-clear" type="button"><i className="far fa-image"></i></button>
+                        
+                        <ReactFilestack
+                            apikey="A08VS2cspQalbXwHGF9Ewz"
+                            buttonText="Click me"
+                            buttonClass="btn-clear"
+                            onSuccess={this.handleImage}
+                            render={({ onPick }) => (
+                                <button className="btn-clear" type="button" onClick={onPick} ><i className="far fa-image"></i></button>
+                              )}
+                            />
                         <button className="btn-primary" onClick={this.handlePost} type="button">Post</button>
                     </div>
                 </form>
