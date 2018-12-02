@@ -21,8 +21,12 @@ class TweetList extends Component {
 
         return (
             <div>
-                <Route path='/profile' render={() => myTweets.map(tweet => <TweetItem value={tweet} key={tweet._id} />)}/>
-                <Route path='(/|/login|/signup)' exact render={() => this.props.tweets.map(tweet => <TweetItem value={tweet} key={tweet._id} />)} />
+                <Route path='/profile' render={() => myTweets
+                    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                    .map(tweet => <TweetItem value={tweet} key={tweet._id} />)}/>
+                <Route path='(/|/login|/signup)' exact render={() => this.props.tweets
+                    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                    .map(tweet => <TweetItem value={tweet} key={tweet._id} />)} />
             </div>
         );
     }
