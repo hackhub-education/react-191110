@@ -286,6 +286,7 @@ textarea.input-profile {
 .avatar-upload {
     position: absolute;
     top: 0;
+    left: 0;
     border-radius: 50%;
     width: 100%;
     opacity: 0;
@@ -298,4 +299,11 @@ textarea.input-profile {
 
 .img-edit:hover .avatar-upload {
     opacity: 1;
+}
+
+.upload-sm {
+    width: 25px;
+    height: 25px;
+    margin-left: 10px;
+    border-radius: 2px;
 }

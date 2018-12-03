@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+import ReactFilestack from 'filestack-react';
 
 class ProfileForm extends Component {
     constructor(props) {
@@ -16,6 +17,7 @@ class ProfileForm extends Component {
         this.handleLocationChange = this.handleLocationChange.bind(this)
         this.handleBioChange = this.handleBioChange.bind(this)
         this.saveProfile = this.saveProfile.bind(this)
+        this.handleImage = this.handleImage.bind(this)
     }
 
     handleNameChange(e) {
@@ -44,15 +46,26 @@ class ProfileForm extends Component {
         })
     }
 
+    handleImage(res) {
+        this.setState({
+            avatarUrl: res.filesUploaded[0].url
+        })
+    }
+
     render() {
         let profile = this.props.profile
         return (
             <div className="col-2of5 bg-white">
-                <form className="profile" action="profile.html">
+                <form className="profile">
                     <div className="relative img-edit">
                         <img className="avatar" src={this.state.avatarUrl} alt="avatar" />
-                        <input className="hidden" type="file" />
-                        <img className="avatar-upload" src="img/upload.png" alt="upload-img" />
+                        <ReactFilestack
+                            apikey="A08VS2cspQalbXwHGF9Ewz"
+                            onSuccess={this.handleImage}
+                            render={({ onPick }) => (
+                                <img className="avatar-upload" onClick={ onPick } src="/img/upload.png" alt="upload-img" />
+                              )}
+                        />
                     </div>
                     <input className="input-profile" type="text" value={this.state.name} onChange={this.handleNameChange} placeholder="Full name" />
                     <h5>@{profile.username}</h5>
