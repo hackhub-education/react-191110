@@ -33,6 +33,12 @@ class TweetPost extends Component {
         })
     }
 
+    handleImage(res) {
+        this.setState({
+            imageUrl: res.filesUploaded[0].url
+        })
+    }
+
     render() {
         return (
             <div className="tweet">
